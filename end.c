@@ -1,23 +1,33 @@
 #include "philo.h"
 
-void	free_forks(t_table *table)
+void	free_mutex(t_table *table)
 {
 	int	i;
 
 	i = 0;
 	while (i < table->nbr_philos)
 	{
-		pthread_mutex_destroy(&table->philos[i].left_fork);
+		pthread_mutex_destroy(&table->forks[i]);
+		pthread_mutex_destroy(&table->philos[i]->eating);
 		i++;
 	}
+	pthread_mutex_destroy(&table->print);
+	pthread_mutex_destroy(&table->isdead);
+	pthread_mutex_destroy(&table->end);
 }
 
 void	free_table(t_table *table)
 {
+	int	i;
+
+	i = 0;
+	free_mutex(table);
+	free(table->forks);
+	while (i < table->nbr_philos)
+	{
+		free(table->philos[i]);
+		i++;
+	}
 	free(table->philos);
-	free_forks(table);
-	pthread_mutex_destroy(&table->eating);
-	pthread_mutex_destroy(&table->print);
-	pthread_mutex_destroy(&table->isdead);
-	pthread_mutex_destroy(&table->end);
+	free(table);
 }

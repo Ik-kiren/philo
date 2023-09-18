@@ -1,6 +1,6 @@
-CC = gcc -Werror -Wall -Wextra
+CC = gcc
 NAME = philo
-SRCS = philo.c init.c thread.c utils.c end.c
+SRCS = philo.c init.c thread.c utils.c end.c death.c
 OBJS = $(SRCS:c=o)
 
 all : $(NAME)

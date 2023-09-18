@@ -1,48 +1,73 @@
 #include "philo.h"
 
-void	init_philos(t_table *table)
+void get_forks(t_philo *philo)
 {
-	int	i;
+	philo->left_fork = philo->id;
+	philo->right_fork = (philo->id + 1) % philo->table->nbr_philos;
+	if (philo->id % 2)
+	{
+		philo->right_fork = philo->id;
+		philo->left_fork = (philo->id + 1) % philo->table->nbr_philos;
+	}
+}
 
+t_philo	**init_philos(t_table *table)
+{
+	t_philo	**philos;
+	int		i;
+
+	i = 0;
+	philos = malloc(sizeof(t_philo) * table->nbr_philos);
+	while (i < table->nbr_philos)
+	{
+		philos[i] = malloc(sizeof(t_philo));
+		philos[i]->id = i;
+		philos[i]->table = table;
+		philos[i]->nb_eat = 0;
+		pthread_mutex_init(&philos[i]->eating, NULL);
+		get_forks(philos[i]);
+		i++;
+	}
+	return (philos);
+}
+
+pthread_mutex_t	*init_mutex_forks(t_table *table)
+{
+	pthread_mutex_t	*forks;
+	int				i;
+
+	forks = malloc(sizeof(pthread_mutex_t) * table->nbr_philos);
 	i = 0;
 	while (i < table->nbr_philos)
 	{
-		table->philos[i].id = i;
-		table->philos[i].last_meal = get_time();
-		table->philos[i].right_fork = NULL;
-		pthread_mutex_init(&table->philos[i].left_fork, NULL);
-		table->philos[i].table = table;
-		table->philos[i].nb_eat = 0;
-		table->philos[i].last_meal = 0;
-		if (i == table->nbr_philos - 1)
-			table->philos[i].right_fork = &table->philos[0].left_fork;
-		else
-			table->philos[i].right_fork = &table->philos[i + 1].left_fork;
+		pthread_mutex_init(&forks[i], NULL);
 		i++;
 	}
+	return (forks);
 }
 
 void	init_mutex(t_table *table)
 {
-	pthread_mutex_init(&table->eating, NULL);
+	table->forks = init_mutex_forks(table);
+	pthread_mutex_init(&table->end, NULL);
 	pthread_mutex_init(&table->print, NULL);
 	pthread_mutex_init(&table->isdead, NULL);
-	pthread_mutex_init(&table->end, NULL);
 }
 
-int init_table(t_table *table, int argc, char **argv)
+t_table	*init_table(int argc, char **argv)
 {
-	table->nbr_philos = atoi(argv[1]);
-	table->time_to_die = atoi(argv[2]);
-	table->time_to_eat = atoi(argv[3]);
-	table->time_to_sleep = atoi(argv[4]);
+	t_table	*table;
+
+	table = malloc(sizeof(t_table));
+	table->nbr_philos = ft_atoi(argv[1]);
+	table->time_to_die = ft_atoi(argv[2]);
+	table->time_to_eat = ft_atoi(argv[3]);
+	table->time_to_sleep = ft_atoi(argv[4]);
 	table->died = 0;
-	table->philos = malloc(sizeof(t_philo) * table->nbr_philos);
-	table->nb_eat = -1;
-	table->total_eat = 0;
+	table->total_eat = -1;
 	if (argc == 6)
-		table->nb_eat = atoi(argv[5]);
+		table->total_eat = ft_atoi(argv[5]);
+	table->philos = init_philos(table);
 	init_mutex(table);
-	init_philos(table);
-	return (0);
+	return (table);
 }

@@ -1,23 +1,48 @@
 #include "philo.h"
 
-void	ft_usleep(long int time_in_ms)
+int	ft_atoi(char *str)
 {
-	long int	start_time;
+	int	i;
+	int	res;
 
-	start_time = 0;
-	start_time = get_time();
-	while ((get_time() - start_time) < time_in_ms)
-		usleep(time_in_ms / 10);
+	i = 0;
+	res = 0;
+	while (str[i])
+	{
+		if (str[i] == '+')
+			i++;
+		res *= 10;
+		res += str[i] - '0';
+		i++;
+	}
+	return (res);
 }
 
-long int	get_time(void)
+void	start_delay(time_t start)
+{
+	while (get_time() < start)
+		continue ;
+}
+
+void	ft_usleep(t_table *table, long int time)
+{
+	time_t	sleeps;
+
+	sleeps = get_time() + time;
+	while (get_time() < sleeps)
+	{
+		if (check_end(table))
+			break ;
+		usleep(100);
+	}
+}
+
+time_t	get_time(void)
 {
 	struct timeval	tv;
-	long int		time;
 
 	gettimeofday(&tv, NULL);
-	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	return (time);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 int	check_int(long nbr)
