@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:51:22 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 15:04:28 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 15:59:03 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int	check_int(long nbr, int i)
 {
 	if (nbr > INT_MAX)
 		return (0);
-	else if (nbr >= INT_MAX && i == 1)
-		return (0);
+	/*else if (nbr >= INT_MAX && i == 1)
+		return (0);*/
+	i = i;
 	return (1);
 }
 

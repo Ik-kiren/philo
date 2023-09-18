@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:46:09 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 13:52:57 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:36:56 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_philo	**init_philos(t_table *table)
 
 	i = 0;
 	philos = malloc(sizeof(t_philo) * table->nbr_philos);
+	if (!philos)
+		return (NULL);
 	while (i < table->nbr_philos)
 	{
 		philos[i] = malloc(sizeof(t_philo));
@@ -80,6 +82,11 @@ t_table	*init_table(int argc, char **argv)
 	if (argc == 6)
 		table->total_eat = ft_atoi(argv[5]);
 	table->philos = init_philos(table);
+	if (!table->philos)
+	{
+		free(table);
+		return (NULL);
+	}
 	init_mutex(table);
 	return (table);
 }

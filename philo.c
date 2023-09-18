@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 11:31:35 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 14:58:25 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:36:35 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(int argc, char **argv)
 {
 	t_table	*table;
 
-	if (argc < 5)
+	if (argc < 5 || argc > 6)
 	{
 		ft_printf("error\n");
 		return (0);
@@ -71,6 +71,11 @@ int	main(int argc, char **argv)
 	if (!checker(argc, argv))
 		return (0);
 	table = init_table(argc, argv);
+	if (!table)
+	{
+		ft_printf("error\n");
+		return (0);
+	}
 	start(table);
 	end(table);
 }
