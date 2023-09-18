@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 11:31:35 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 13:50:33 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 14:58:25 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ void	start(t_table *t)
 		i++;
 	}
 	if (t->nbr_philos > 1)
-	{
 		pthread_create(&t->death_tid, NULL, &death, t);
-	}
 }
 
 void	end(t_table *table)
@@ -56,6 +54,8 @@ void	end(t_table *table)
 	}
 	if (table->nbr_philos > 1)
 		pthread_join(table->death_tid, NULL);
+	if (table->total_eat != -1)
+		ft_printf("everyone ate %d times\n", table->total_eat);
 	free_table(table);
 }
 
@@ -63,6 +63,11 @@ int	main(int argc, char **argv)
 {
 	t_table	*table;
 
+	if (argc < 5)
+	{
+		ft_printf("error\n");
+		return (0);
+	}
 	if (!checker(argc, argv))
 		return (0);
 	table = init_table(argc, argv);

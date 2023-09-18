@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 11:31:32 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 13:53:11 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 14:36:55 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_philo
 void	print_action(t_philo *philo, char *str, int end);
 t_table	*init_table(int argc, char **argv);
 void	*activities(void *data);
-int		check_death(t_philo *philo, int i);
 time_t	get_time(void);
 int		checker(int argc, char **argv);
 void	free_table(t_table *table);
@@ -66,5 +65,6 @@ int		check_end(t_table *table);
 void	start_delay(time_t start);
 int		ft_atoi(char *str);
 int		checker(int argc, char **argv);
+int		philo_dead(t_philo *philo);
 
 #endif

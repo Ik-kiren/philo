@@ -9,9 +9,11 @@ $(NAME) : $(OBJS)
 		ar rcs $(NAME) $(OBJS)
 
 clean :
-	rm -f *.o
+	rm -f $(NAME)
+	
 fclean : clean
-	rm -f libftprintf.a
+	rm -f $(OBJS)
+	
 re : fclean all
 
 .PHONY : clean fclean re all

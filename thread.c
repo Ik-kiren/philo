@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:46:07 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 13:52:46 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 14:37:40 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ void	*activities(void *data)
 	start_delay(philo->table->start_t);
 	if (philo->table->time_to_die == 0)
 		return (NULL);
+	if (philo->table->nbr_philos == 1)
+	{
+		print_action(philo, "has taken a fork", 1);
+		ft_usleep(philo->table, philo->table->time_to_die);
+		philo_dead(philo);
+		return (NULL);
+	}
 	else if (philo->id % 2)
 		usleep(200);
 	while (!check_end(philo->table))
