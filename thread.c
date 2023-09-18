@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/18 13:46:07 by cdupuis           #+#    #+#             */
+/*   Updated: 2023/09/18 13:52:46 by cdupuis          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	philo_thinks(t_philo *philo)
@@ -5,7 +17,8 @@ void	philo_thinks(t_philo *philo)
 	time_t	time_to_think;
 
 	pthread_mutex_lock(&philo->eating);
-	time_to_think = philo->table->time_to_die - (get_time() - philo->last_meal) - philo->table->time_to_eat / 2;
+	time_to_think = philo->table->time_to_die - (get_time() - philo->last_meal)
+		- philo->table->time_to_eat / 2;
 	pthread_mutex_unlock(&philo->eating);
 	if (time_to_think < 0)
 		time_to_think = 0;
@@ -38,7 +51,7 @@ void	philo_eats(t_philo *philo)
 	philo_thinks(philo);
 }
 
-void	*activities(void *data) 
+void	*activities(void *data)
 {
 	t_philo	*philo;
 
@@ -52,14 +65,8 @@ void	*activities(void *data)
 	if (philo->table->time_to_die == 0)
 		return (NULL);
 	else if (philo->id % 2)
-	{
-		//think_routine(philo, true);
 		usleep(200);
-	}
 	while (!check_end(philo->table))
-	{
 		philo_eats(philo);
-		//think_routine(philo, false);
-	}
 	return (NULL);
 }

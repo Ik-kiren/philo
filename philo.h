@@ -6,20 +6,23 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 11:31:32 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 09:50:59 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 13:53:11 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/time.h>
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <string.h>
+# include <pthread.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <sys/time.h>
+# include "ftprintf/ft_printf.h"
 
 # define INT_MAX 2147483647
 
-typedef struct s_philo t_philo;
+typedef struct s_philo	t_philo;
 
 typedef struct s_table
 {
@@ -33,14 +36,14 @@ typedef struct s_table
 	time_t				start_t;
 	t_philo				**philos;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t 	print;
-	pthread_mutex_t 	isdead;
-	pthread_mutex_t 	end;
+	pthread_mutex_t		print;
+	pthread_mutex_t		isdead;
+	pthread_mutex_t		end;
 }				t_table;
 
 typedef struct s_philo
 {
-	pthread_t				philo_tid;
+	pthread_t				tid;
 	int						id;
 	int						right_fork;
 	int						left_fork;
@@ -60,5 +63,8 @@ void	free_table(t_table *table);
 void	ft_usleep(t_table *table, long int time);
 void	*death(void *data);
 int		check_end(t_table *table);
-void 	start_delay(time_t start);
+void	start_delay(time_t start);
 int		ft_atoi(char *str);
+int		checker(int argc, char **argv);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 11:31:35 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/17 19:48:49 by cdupuis          ###   ########.fr       */
+/*   Updated: 2023/09/18 13:50:33 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,33 @@
 
 void	print_action(t_philo *philo, char *str, int end)
 {
+	int	time;
+
 	pthread_mutex_lock(&philo->table->print);
 	if (check_end(philo->table) && end)
 	{
 		pthread_mutex_unlock(&philo->table->print);
 		return ;
 	}
-	printf("%ld %d %s\n", get_time() - philo->table->start_t, philo->id, str);
+	time = get_time() - philo->table->start_t;
+	ft_printf("%d %d %s\n", time, philo->id, str);
 	pthread_mutex_unlock(&philo->table->print);
 }
 
-void	start(t_table *table)
+void	start(t_table *t)
 {
 	int	i;
 
 	i = 0;
-	table->start_t = get_time();
-	while (i < table->nbr_philos)
+	t->start_t = get_time();
+	while (i < t->nbr_philos)
 	{
-		pthread_create(&table->philos[i]->philo_tid, NULL, &activities, table->philos[i]);
+		pthread_create(&t->philos[i]->tid, NULL, &activities, t->philos[i]);
 		i++;
 	}
-	if (table->nbr_philos > 1)
+	if (t->nbr_philos > 1)
 	{
-		pthread_create(&table->death_tid, NULL, &death, table);
+		pthread_create(&t->death_tid, NULL, &death, t);
 	}
 }
 
@@ -48,7 +51,7 @@ void	end(t_table *table)
 	i = 0;
 	while (i < table->nbr_philos)
 	{
-		pthread_join(table->philos[i]->philo_tid, NULL);
+		pthread_join(table->philos[i]->tid, NULL);
 		i++;
 	}
 	if (table->nbr_philos > 1)

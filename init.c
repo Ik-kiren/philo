@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/18 13:46:09 by cdupuis           #+#    #+#             */
+/*   Updated: 2023/09/18 13:52:57 by cdupuis          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void get_forks(t_philo *philo)
+void	get_forks(t_philo *philo)
 {
 	philo->left_fork = philo->id;
 	philo->right_fork = (philo->id + 1) % philo->table->nbr_philos;

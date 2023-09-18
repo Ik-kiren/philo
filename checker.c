@@ -1,45 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   end.c                                              :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdupuis <chris_dupuis@outlook.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/18 13:46:12 by cdupuis           #+#    #+#             */
-/*   Updated: 2023/09/18 13:46:13 by cdupuis          ###   ########.fr       */
+/*   Created: 2023/09/18 13:51:22 by cdupuis           #+#    #+#             */
+/*   Updated: 2023/09/18 13:51:27 by cdupuis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_mutex(t_table *table)
+int	check_int(long nbr)
 {
-	int	i;
-
-	i = 0;
-	while (i < table->nbr_philos)
-	{
-		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->philos[i]->eating);
-		i++;
-	}
-	pthread_mutex_destroy(&table->print);
-	pthread_mutex_destroy(&table->isdead);
-	pthread_mutex_destroy(&table->end);
+	if (nbr > INT_MAX)
+		return (0);
+	return (1);
 }
 
-void	free_table(t_table *table)
+int	check_num(char *str)
 {
 	int	i;
 
 	i = 0;
-	free_mutex(table);
-	free(table->forks);
-	while (i < table->nbr_philos)
+	if (str[0] == '+')
+		i++;
+	while (str[i])
 	{
-		free(table->philos[i]);
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
 		i++;
 	}
-	free(table->philos);
-	free(table);
+	return (check_int(atol(str)));
+}
+
+int	checker(int argc, char **argv)
+{
+	int	i;
+	int	check;
+
+	i = 1;
+	while (i < argc)
+	{
+		check = check_num(argv[i]);
+		if (check == 0)
+		{
+			ft_printf("error\n");
+			return (check);
+		}
+		i++;
+	}
+	return (check);
 }
